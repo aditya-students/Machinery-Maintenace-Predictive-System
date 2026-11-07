@@ -1,0 +1,10 @@
+import os
+
+base = r'D:\Projects\Machinery Maintainence Predictive System (demo)'
+filepath = os.path.join(base, 'src', 'features.py')
+
+with open(filepath, 'w') as f:
+    f.write("""\"\"\"Feature engineering module for C-MAPSS FD001 dataset.
+Pure, tested, config-driven functions. ALL computations grouped by `unit`.
+\"\"\"\n\nimport numpy as np\nimport pandas as pd\n\nimport config\n\n\ndef fft_features(signal: np.ndarray, fs: float = 1.0) -> dict:\n    \"\"\"Compute FFT features for a 1D signal.\"\"\"\n    from scipy.fft import fft\n    signal = np.asarray(signal, dtype=float)\n    n = len(signal)\n    # Remove mean and detrend\n    signal_demeaned = signal - np.mean(signal)\n    # Compute FFT\n    fft_vals = fft(signal_demeaned)\n    magnitudes = np.abs(fft_vals[:n // 2 + 1])\n    # Frequency axis\n    freq = np.fft.fftfreq(n, d=1.0 / fs)[:n // 2 + 1]\n    # Total spectral energy\n    spectral_energy = np.sum(magnitudes ** 2)\n    # Normalize to get PSD\n    psd = magnitudes ** 2 / spectral_energy if spectral_energy > 0 else np.zeros_like(magnitudes)\n    # Dominant frequency\n    dominant_idx = np.argmax(magnitudes)\n    dominant_freq = freq[dominant_idx]\n    # Spectral entropy\n    psd_normalized = psd / (np.sum(psd) + 1e-10)\n    spectral_entropy = -np.sum(psd_normalized[psd_normalized > 0] * np.log(psd_normalized[psd_normalized > 0]))\n    # Band energies (arbitrary but consistent division)\n    n_bands = 3\n    band_width = len(psd) // n_bands\n    band_energies = {}\n    for i in range(n_bands):\n        start = i * band_width\n        end = (i + 1) * band_width if i < n_bands - 1 else len(psd)\n        band_energies[f\"band_{i+1}\"] = float(np.sum(psd[start:end]))\n    return {\n        \"dominant_freq\": float(dominant_freq),\n        \"spectral_energy\": float(spectral_energy),\n        \"spectral_entropy\": float(spectral_entropy),\n        \"band_energies\": band_energies\n    }\n""")
+print("Part 1 written")

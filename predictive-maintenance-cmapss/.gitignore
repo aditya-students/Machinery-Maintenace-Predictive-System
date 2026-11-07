@@ -1,0 +1,23 @@
+# C-MAPSS Predictive Maintenance - Gitignore
+
+# Data files (raw, interim, processed)
+data/raw/CMAPSSData/
+data/interim/
+data/processed/
+
+# Model binaries and logs
+models/
+mlruns/
+wandb/
+
+# Python environment
+.__pycache__/
+.env
+.venv/
+
+# IPython notebook checkpoints
+.ipynb_checkpoints/
+
+# Project-specific
+reports/*.md
+reports/figures/*

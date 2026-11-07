@@ -1,0 +1,37 @@
+# C-MAPSS Configuration
+
+# Paths
+DATA_RAW_DIR: str = "data/raw/CMAPSSData"
+DATA_INTERIM_DIR: str = "data/interim"
+DATA_PROCESSED_DIR: str = "data/processed"
+MODELS_DIR: str = "models"
+REPORTS_DIR: str = "reports"
+FIGS_DIR: str = "reports/figures"
+DOCS_DIR: str = "docs"
+CONFIGS_DIR: str = "configs"
+
+# File names
+TRAIN_FILE: str = "train_FD001.txt"
+TEST_FILE: str = "test_FD001.txt"
+RUL_FILE: str = "RUL_FD001.txt"
+
+# Target configuration
+TARGET_H: int = 30  # Default H cycles for failure prediction
+TARGET_H_TEST: int = 24  # Also test with H=24
+
+# Feature engineering
+LAGS: list[int] = [1, 3, 6, 12, 24]  # Lag cycles per sensor
+ROLL_WINDOWS: list[int] = [3, 12, 24]  # Rolling window sizes
+EWMA_ALPHA: float = 0.3  # EWMA smoothing factor
+
+# Model configuration
+TEST_SPLIT_RATIO: float = 0.2  # Engine-level validation split
+RANDOM_SEED: int = 42
+
+# FFT configuration
+FFT_FS: int = 1  # Sampling frequency for FFT (1 cycle per data point)
+
+# Alerting configuration
+COST_FALSE_ALARM: float = 1.0
+COST_MISSED_FAILURE: float = 5.0
+CONSECUTIVE_CYCLES: int = 3  # Require k consecutive cycles above threshold
